@@ -1,0 +1,38 @@
+@model IEnumerable<LicenseNedroMVC.Models.License>
+
+<div class="list-group" id="deposits-container">
+    @foreach (var license in Model)
+    {
+        <a class="list-group-item list-group-item-action deposit-item" 
+           data-id="@license.Id"
+           asp-controller="License" 
+           asp-action="Detail" 
+           asp-route-id="@license.Id">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-1">Лицензия: <b>@license.LicenseNumber</b></h5>
+                    <p class="mb-1">@license.Location</p>
+                    <small>Держатель: <b>@license.Name</b></small>
+                    <small>Действует до <b>@license.EndDate.ToString("dd.MM.yyyy")</b></small>
+                </div>
+                <div>
+                    <span class="badge @GetStatusBadgeClass(license.Status)">
+                        @license.Status
+                    </span>
+                </div>
+            </div>
+        </a>
+    }
+</div>
+
+@functions {
+    string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Действующая" => "bg-success",
+            "Заявка" => "bg-warning",
+            _ => "bg-secondary"
+        };
+    }
+}

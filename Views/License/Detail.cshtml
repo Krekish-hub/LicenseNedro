@@ -1,0 +1,158 @@
+@model LicenseNedroMVC.Models.License
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container license-detail-container">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="license-header mb-4">
+                <h1 class="license-title">№ @Model.LicenseNumber</h1>
+                <div class="license-meta">
+                    <span class="badge @(Model.Status == "Действующая" ? "bg-success" : Model.Status == "Заявка" ? "bg-warning" : "bg-secondary")">
+                        @Model.Status
+                    </span>
+                    <span class="text-muted ms-2">Держатель @Model.Name</span>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Основная информация</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="info-item mb-3">
+                                <h6 class="info-label">Дата выдачи:</h6>
+                                <p class="info-value">@Model.StartDate.ToString("dd.MM.yyyy")</p>
+                            </div>
+                            
+                            <div class="info-item mb-3">
+                                <h6 class="info-label">Срок действия до:</h6>
+                                <p class="info-value">@Model.EndDate.ToString("dd.MM.yyyy")</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="info-item mb-3">
+                                <h6 class="info-label">Местоположение:</h6>
+                                <p class="info-value">@Model.Location</p>
+                            </div>
+                            
+                            <div class="info-item mb-3">
+                                <h6 class="info-label">Тип ископаемого:</h6>
+                                <p class="info-value">@Model.MineralType</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Технические характеристики</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="info-item mb-3">
+                                <h6 class="info-label">Запасы:</h6>
+                                <p class="info-value">@Model.Reserves</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="info-item mb-3">
+                                <h6 class="info-label">Площадь:</h6>
+                                <p class="info-value">@Model.Area</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-align-left me-2"></i>Описание</h5>
+                </div>
+                <div class="card-body">
+                    <div class="license-description">
+                        @Html.Raw(Model.Description)
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="sticky-sidebar">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-map-marked-alt me-2"></i>Расположение</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="license-map" style="height: 250px;"></div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-envelope me-2"></i>Оставить заявку</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="application-form">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Ваше имя</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Телефон</label>
+                                <input type="tel" class="form-control" id="phone">
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Сообщение</label>
+                                <textarea class="form-control" id="message" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Отправить заявку</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="~/css/Detail.css" asp-append-version="true"/>
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+
+@section Scripts {
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_ключ&lang=ru_RU"></script>
+    <script>
+        ymaps.ready(function() {
+            var map = new ymaps.Map('license-map', {
+                center: [@Model.Latitude, @Model.Longitude],
+                zoom: 10,
+                controls: ['zoomControl']
+            });
+            
+            var placemark = new ymaps.Placemark([@Model.Latitude, @Model.Longitude], {
+                balloonContent: '@Model.Name'
+            }, {
+                preset: 'islands#icon',
+                iconColor: '#0095b6'
+            });
+            
+            map.geoObjects.add(placemark);
+        });
+        
+        document.getElementById('application-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Обработка формы
+            alert('Заявка отправлена!');
+        });
+    </script>
+}

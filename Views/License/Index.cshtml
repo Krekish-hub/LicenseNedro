@@ -1,0 +1,251 @@
+﻿@{
+    ViewData["Title"] = "Главная страница";
+}
+@model IEnumerable<LicenseNedroMVC.Models.License>
+
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+<link rel="stylesheet" href="~/css/Index.css" asp-append-version="true"/>
+
+<div class="container">
+    <main class="main-content">
+        <section class="hero-section">
+            <div class="container">
+                <h1 class="hero-title">Лицензии недропользования</h1>
+                <p class="hero-subtitle">Комплексные решения для управления минерально-сырьевыми ресурсами</p>
+                <a href="#deposits" class="btn btn-primary btn-lg">Просмотреть месторождения</a>
+            </div>
+        </section>
+    
+        <section class="features-section">
+            <div class="container">
+                <h2 class="section-title">Наши возможности</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card feature-card">
+                            <div class="card-body text-center">
+                                <div class="feature-icon">🗺️</div>
+                                <h3 class="h4">Картография</h3>
+                                <p class="card-text">Визуализация месторождений полезных ископаемых на интерактивных картах.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card feature-card">
+                            <div class="card-body text-center">
+                                <div class="feature-icon">📊</div>
+                                <h3 class="h4">Аналитика</h3>
+                                <p class="card-text">Детальный анализ данных по добыче и запасам полезных ископаемых.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card feature-card">
+                            <div class="card-body text-center">
+                                <div class="feature-icon">📑</div>
+                                <h3 class="h4">Документооборот</h3>
+                                <p class="card-text">Управление лицензиями и разрешительной документацией.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="deposits" class="deposits-section">
+            <div class="container">
+                <h2 class="section-title">Карта месторождений</h2>
+
+                <!-- Схематичная карта -->
+                <div class="schematic-map-container mb-5">
+                    <img src="~/images/field-map.png" alt="Карта региона" class="schematic-map img-fluid">
+                    @foreach (var license in Model)
+                    {
+                        <div class="deposit-point"
+                             style="top: @license.PositionTop; left: @license.PositionLeft;"
+                             data-id="@license.Id"
+                             data-lat="@license.Latitude"
+                             data-lng="@license.Longitude"
+                             onclick="showLicenseOnMap(@license.Id, @license.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture), @license.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture))">
+                            <div class="tooltip">@license.Name</div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Фильтры и список -->
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="filters-card card mb-4">
+                            <div class="card-body">
+                                <h3 class="h5">Фильтры</h3>
+                                <form id="filterForm">
+                                    <div class="mb-3">
+                                        <label class="form-label">Тип полезного ископаемого</label>
+                                        <select class="form-select" name="mineralType">
+                                            <option value="">Все</option>
+                                            <option value="Золото">Золото</option>
+                                            <option value="Нефть">Нефть</option>
+                                            <option value="Газ">Газ</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Статус лицензии</label>
+                                        <select class="form-select" name="status">
+                                            <option value="">Все</option>
+                                            <option value="Действующая">Действующая</option>
+                                            <option value="Заявка">Заявка</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Применить</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="deposits-list card">
+                            <div class="card-body">
+                                <h3 class="h5 mb-4">Список месторождений</h3>
+                                <div id="deposits-container">
+                                    @await Html.PartialAsync("_LicenseListPartial", Model)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карта -->
+                <div class="mt-5">
+                    <h3 class="h4 mb-3">Точное расположение на карте</h3>
+                    <div class="map-container">
+                        <iframe id="yandex-map" 
+                                src="https://yandex.ru/map-widget/v1/?um=constructor%3Ab70abf0d2e390bc354c1af1aeb8969536bfc815654714aac6657d2891956058e&amp;lang=ru_RU&amp;scroll=true" 
+                                width="100%" 
+                                height="500" 
+                                frameborder="0"
+                                loading="lazy">
+                        </iframe>
+                        <div class="map-overlay" onclick="focusMap()"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+
+@section Scripts {
+    <script>
+        // Более надежная функция для отображения лицензии на карте
+        function showLicenseOnMap(id, lat, lng) {
+            try {
+                const newSrc = `https://yandex.ru/map-widget/v1/?um=constructor%3Ab70abf0d2e390bc354c1af1aeb8969536bfc815654714aac6657d2891956058e&amp;lang=ru_RU&ll=${lng}%2C${lat}&z=12`;
+                
+                const iframe = document.getElementById('yandex-map');
+                
+                // Проверяем, нужно ли обновлять src
+                if (!iframe.src.includes(`ll=${lng}%2C${lat}`)) {
+                    iframe.src = newSrc;
+                }
+                
+                // Подсвечиваем точку на схематичной карте
+                document.querySelectorAll('.deposit-point').forEach(point => {
+                    point.classList.toggle('active', point.dataset.id == id);
+                });
+                
+                // Плавная прокрутка к карте
+                setTimeout(() => {
+                    const mapContainer = document.querySelector('.map-container');
+                    mapContainer.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }, 300);
+                
+            } catch (error) {
+                console.error('Error showing license on map:', error);
+            }
+        }
+
+        // Обработчики событий для точек
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.deposit-point').forEach(point => {
+                point.addEventListener('click', function() {
+                    const id = this.dataset.id;
+                    const lat = parseFloat(this.dataset.lat);
+                    const lng = parseFloat(this.dataset.lng);
+                    showLicenseOnMap(id, lat, lng);
+                });
+            });
+        });
+
+        
+        // Фокус на карте при клике на оверлей
+        function focusMap() {
+            document.querySelector('.map-overlay').classList.remove('active');
+        }
+        
+        // Фильтрация
+        document.getElementById('filterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            
+            // Показываем индикатор загрузки
+            const container = document.getElementById('deposits-container');
+            container.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>';
+            
+            fetch('/License/Filter?' + new URLSearchParams(formData).toString(), {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network error');
+                return response.text();
+            })
+            .then(html => {
+                container.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Filter error:', error);
+                container.innerHTML = '<div class="alert alert-danger">Ошибка загрузки данных. Пожалуйста, попробуйте ещё раз.</div>';
+            });
+        });
+        
+        // Инициализация подсказок и взаимодействия
+        document.addEventListener('DOMContentLoaded', function() {
+            // Обработчики для точек на схематичной карте
+            document.querySelectorAll('.deposit-point').forEach(point => {
+                point.addEventListener('click', function() {
+                    const id = this.dataset.id;
+                    const lat = this.dataset.lat;
+                    const lng = this.dataset.lng;
+                    showLicenseOnMap(id, lat, lng);
+                });
+            });
+            
+            // Обработчики для элементов списка
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.license-item')) {
+                    const item = e.target.closest('.license-item');
+                    const id = item.dataset.id;
+                    const lat = item.dataset.lat;
+                    const lng = item.dataset.lng;
+                    showLicenseOnMap(id, lat, lng);
+                }
+            });
+        });
+    </script>
+}
+
+@functions {
+    string GetStatusColor(string status)
+    {
+        return status switch
+        {
+            "Действующая" => "#00FF00",
+            "Заявка" => "#FFFF00",
+            "Приостановлена" => "#FF0000",
+            _ => "#888888"
+        };
+    }
+}

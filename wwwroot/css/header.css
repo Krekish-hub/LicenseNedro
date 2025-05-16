@@ -1,0 +1,270 @@
+/* Хедер */
+.main-header {
+    background-color: var(--dark-color);
+    box-shadow: var(--header-shadow);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    height: var(--header-height);
+    transition: var(--transition-header);
+    display: flex;
+    align-items: center;
+    will-change: transform, height;
+}
+
+.header-content {
+    width: 100%;
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: 0 var(--content-padding);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Брендинг */
+.header-branding {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: var(--transition-header);
+    padding: 0.5rem 0;
+}
+
+.brand-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.brand-name {
+    font-size: clamp(1.5rem, 3vw, 1.8rem);
+    font-weight: 700;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: var(--transition-header);
+}
+
+.brand-name:hover {
+    color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.brand-logo {
+    height: 6.25rem;
+    width: auto;
+    transition: var(--transition-header);
+    object-fit: contain;
+    position: relative;
+    bottom: 50%;
+}
+
+/* Навигация */
+.main-navigation {
+    width: 100%;
+    height: var(--header-shrink-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar {
+    width: 100%;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 0.5rem;
+}
+
+.nav-link {
+    color: var(--primary-color);
+    font-weight: 500;
+    padding: var(--nav-link-padding);
+    transition: var(--transition-header);
+    position: relative;
+    text-decoration: none;
+    border-radius: var(--nav-link-radius);
+    display: flex;
+    align-items: center;
+}
+
+.nav-link:hover {
+    color: var(--secondary-color);
+    background-color: rgba(52, 152, 219, 0.1);
+    transform: translateY(-2px);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0.3125rem;
+    left: 0.9375rem;
+    right: 0.9375rem;
+    height: var(--underline-height);
+    background-color: var(--secondary-color);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    transform: scaleX(1);
+}
+
+.nav-link.active {
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+/* Состояние при скролле */
+.main-header.scrolled {
+    height: var(--header-shrink-height);
+    background-color: #F8F9FAFF;
+}
+
+.main-header.scrolled .header-branding {
+    transform: translateY(-100%);
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.main-header.scrolled .brand-logo {
+    height: 2.5rem;
+    position: static;
+}
+/* Темная тема */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #1a1a1a;
+        --dark-color: #8f8f8f;
+        --text-color: #e0e0e0;
+        --light-color: #2d2d2d;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+        --border-color: #444;
+    }
+
+    .main-header {
+        background-color: var(--light-color);
+    }
+    .main-header.scrolled {
+        background-color: var(--light-color);
+    }
+
+    .hero-section {
+        background: linear-gradient(135deg, #2c3e50 0%, #1a2a3a 100%);
+    }
+
+    .card{
+        background-color: var(--light-color);
+    }
+
+    .list-group-item {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+    }
+
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+    }
+
+    .footer {
+        background-color: var(--dark-color);
+        color: var(--text-color);
+    }
+    .container {
+        color: var(--text-color);
+    }
+}
+
+/* Адаптивность */
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 992px) {
+    :root {
+        --header-height: 120px;
+        --content-padding: 15px;
+    }
+
+    .hero-section {
+        padding: 6rem 0;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --header-height: 100px;
+        --footer-height: 80px;
+    }
+
+    .hero-section {
+        padding: 4.5rem 0;
+        background-attachment: scroll;
+    }
+
+    .footer {
+        flex-direction: column;
+        line-height: 1.5;
+        padding: 1rem;
+        text-align: center;
+        white-space: normal;
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    :root {
+        --header-height: 80px;
+        --header-shrink-height: 50px;
+        --content-padding: 10px;
+    }
+
+    .hero-section {
+        padding: 3.5rem 0;
+    }
+
+    .hero-btn {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .brand-container {
+        gap: 0.5rem;
+    }
+
+    .brand-logo {
+        height: 4rem;
+    }
+}
+
+/* Стили для печати */
+@media print {
+    .footer,
+    .navbar {
+        display: none;
+    }
+
+    a {
+        text-decoration: none;
+    }
+}

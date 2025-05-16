@@ -1,0 +1,238 @@
+/* Глобальные переменные */
+:root {
+  /* Светлая тема (значения по умолчанию) */
+  --primary-color: #c6b241;
+  --text-color: #333;
+  --bg-color: #f8f9fa;
+  --card-bg: #fff;
+  --border-color: #dee2e6;
+  --muted-text: #6c757d;
+  /* Темная тема */
+  --dark-primary-color: #d7c252;
+  --dark-text-color: #e0e0e0;
+  --dark-bg-color: #121212;
+  --dark-card-bg: #1e1e1e;
+  --dark-card-header-bg: #2d2d2d;
+  --dark-border-color: #444;
+  --dark-muted-text: #9e9e9e;
+  --dark-input-bg: #2d2d2d;
+  --dark-input-focus-bg: #333;
+
+  /* Размеры */
+  --header-height: 150px;
+  --header-shrink-height: 60px;
+  --footer-height: 60px;
+  --content-width: 1200px;
+  --content-padding: 20px;
+  --border-radius: 8px;
+  --nav-link-padding: 0.625rem 0.9375rem;
+  --nav-link-radius: 4px;
+  --underline-height: 2px;
+
+  /* Тени */
+  --header-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  --box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  /* Анимации */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  --transition-header: all 0.3s ease;
+}
+
+/* Базовые стили */
+html {
+  font-size: 14px;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+  position: relative;
+  min-height: 100%;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
+  line-height: 1.6;
+  background-color: var(--bg-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Основной контейнер */
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  margin-top: var(--header-height);
+  padding-bottom: var(--footer-height);
+}
+
+
+/* Анимации */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-1.875rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(1.875rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInNav {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Темная тема */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #1a1a1a;
+    --dark-color: #8f8f8f;
+    --text-color: #e0e0e0;
+    --light-color: #2d2d2d;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --border-color: #444;
+  }
+
+  .main-header {
+    background-color: var(--light-color);
+  }
+  
+  .hero-section {
+    background: linear-gradient(135deg, #2c3e50 0%, #1a2a3a 100%);
+  }
+
+  .card{
+    background-color: var(--light-color);
+  }
+  
+  .list-group-item {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+  
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .footer {
+    background-color: var(--dark-color);
+    color: var(--text-color);
+  }
+}
+
+/* Адаптивность */
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 992px) {
+  :root {
+    --header-height: 120px;
+    --content-padding: 15px;
+  }
+
+  .hero-section {
+    padding: 6rem 0;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --header-height: 100px;
+    --footer-height: 80px;
+  }
+
+  .hero-section {
+    padding: 4.5rem 0;
+    background-attachment: scroll;
+  }
+
+  .footer {
+    flex-direction: column;
+    line-height: 1.5;
+    padding: 1rem;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  :root {
+    --header-height: 80px;
+    --header-shrink-height: 50px;
+    --content-padding: 10px;
+  }
+
+  .hero-section {
+    padding: 3.5rem 0;
+  }
+
+  .hero-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .brand-container {
+    gap: 0.5rem;
+  }
+
+  .brand-logo {
+    height: 4rem;
+  }
+}
+
+/* Стили для печати */
+@media print {
+  .footer,
+  .navbar {
+    display: none;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}

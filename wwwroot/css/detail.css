@@ -1,0 +1,136 @@
+.license-detail-container {
+    margin-top: calc(var(--header-height) + 2rem);
+    padding-bottom: 2rem;
+}
+
+.license-header {
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.license-title {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.license-meta {
+    display: flex;
+    align-items: center;
+}
+
+.card-header {
+    font-weight: 600;
+}
+
+.info-item {
+    padding: 0.75rem;
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+}
+
+.info-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+}
+
+.info-value {
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.license-description {
+    line-height: 1.6;
+}
+
+.license-description p:last-child {
+    margin-bottom: 0;
+}
+
+.sticky-sidebar {
+    position: sticky;
+    top: calc(var(--header-height) + 1rem);
+}
+
+@media (max-width: 992px) {
+    .sticky-sidebar {
+        position: static;
+    }
+
+    .license-detail-container {
+        margin-top: calc(var(--header-shrink-height) + 1rem);
+    }
+}
+
+/* Темная тема - переопределение стилей */
+@media (prefers-color-scheme: dark) {
+    .license-detail-container {
+        background-color: var(--dark-bg-color);
+        color: var(--dark-text-color);
+    }
+
+    .license-header {
+        background-color: var(--dark-card-bg);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .license-title {
+        color: var(--dark-primary-color);
+    }
+
+    .card {
+        background-color: var(--dark-card-bg);
+        border-color: var(--dark-border-color);
+    }
+
+    .card-header {
+        background-color: var(--dark-card-header-bg) !important;
+        color: var(--dark-text-color) !important;
+        border-bottom-color: var(--dark-border-color);
+    }
+
+    .info-item {
+        background-color: var(--dark-card-bg);
+        border: 1px solid var(--dark-border-color);
+    }
+
+    .info-label {
+        color: var(--dark-muted-text);
+    }
+
+    .info-value {
+        color: var(--dark-text-color);
+    }
+
+    .license-description {
+        color: var(--dark-text-color);
+    }
+
+    /* Форма в сайдбаре */
+    .form-control {
+        background-color: var(--dark-input-bg);
+        border-color: var(--dark-border-color);
+        color: var(--dark-text-color);
+    }
+
+    .form-control:focus {
+        background-color: var(--dark-input-focus-bg);
+        border-color: var(--dark-primary-color);
+        color: var(--dark-text-color);
+    }
+
+    .form-label {
+        color: var(--dark-muted-text);
+    }
+
+    /* Дополнительные элементы */
+    .text-muted {
+        color: var(--dark-muted-text) !important;
+    }
+
+    .bg-light {
+        background-color: var(--dark-card-bg) !important;
+    }
+}

@@ -1,0 +1,27 @@
+@model LicenseNedroMVC.Models.Application
+
+<form asp-action="CreateApplication" method="post">
+    <input type="hidden" asp-for="LicenseId" />
+    
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" required>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="Phone" class="form-label"></label>
+        <input asp-for="Phone" class="form-control" required>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" type="email" class="form-control" required>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="Comment" class="form-label"></label>
+        <textarea asp-for="Comment" class="form-control" rows="3"></textarea>
+    </div>
+    
+    <button type="submit" class="btn btn-primary w-100">Отправить заявку</button>
+</form>
