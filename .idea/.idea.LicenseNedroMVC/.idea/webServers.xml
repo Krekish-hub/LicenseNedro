@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="9674d7f9-e8c5-45fd-93d9-3c67a6354630" name="nikitakrek-001-site1.jtempurl.com" url="https://win6158.site4now.net:8172/MsDeploy.axd?site=nikitakrek-001-site1">
+        <fileTransfer host="win6158.site4now.net" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="7503c93e-d966-4c99-aa20-3649c968a3e1" name="site1" url="https://win6158.site4now.net:8172/msdeploy.axd?site=nikitakrek-001-site1">
+        <fileTransfer mountedRoot="" accessType="MOUNT" port="0" />
+      </webServer>
+    </option>
+  </component>
+</project>

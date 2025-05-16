@@ -1,0 +1,6 @@
+﻿services:
+  licensenedromvc:
+    image: licensenedromvc
+    build:
+      context: .
+      dockerfile: Dockerfile
